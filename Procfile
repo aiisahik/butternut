@@ -1,0 +1,1 @@
+web: gunicorn ittakes2.wsgi --log-file -
