@@ -1,5 +1,6 @@
 import os
 import dj_database_url
+import urlparse
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -12,12 +13,49 @@ SECRET_KEY = '85a$2a#((e6t5(+&u=76ckxz-^pak&kg5^w7(0q-qq7mlv=4f!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+LOCAL_ENV = os.environ.get('LOCAL_ENV', False)
 
 ALLOWED_HOSTS = ['*']
 
-DATABASES = {
-    'default':  dj_database_url.config()
-}
+
+# Cache setup   - Redis
+if LOCAL_ENV:
+    CACHES = {
+        'default': {
+            "BACKEND": "redis_cache.RedisCache",
+            "LOCATION": "redis://127.0.0.1:6379/0",
+            "OPTIONS": {
+                'DB': 1,
+                # "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+            }
+        }
+    }
+    DATABASES = {
+        'default': {
+            'PASSWORD': 'c0euVzU6CWiiJPlz8DLHV9Yxdv',
+            'PORT': 5432,
+            'HOST': 'ec2-54-204-0-120.compute-1.amazonaws.com',
+            'USER': 'hdldkfrpjsrhjz',
+            'ENGINE': 'django.db.backends.postgresql_psycopg2', 
+            'NAME': 'd8t41ts7gv55rs'
+        }
+    }
+else: 
+    DATABASES = {
+        'default':  dj_database_url.config()
+    }
+    redis_url = urlparse.urlparse(os.environ.get('REDISCLOUD_URL'))
+    CACHES = {
+            'default': {
+                'BACKEND': 'redis_cache.RedisCache',
+                'LOCATION': '%s:%s' % (redis_url.hostname, redis_url.port),
+                'OPTIONS': {
+                    'PASSWORD': redis_url.password,
+                    'DB': 0,
+            }
+        }
+    }
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 
 # Application definition
@@ -32,6 +70,7 @@ INSTALLED_APPS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -40,6 +79,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
 ROOT_URLCONF = 'ittakes2.urls'
