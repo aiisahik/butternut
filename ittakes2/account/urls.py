@@ -16,7 +16,8 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from tastypie.api import Api
-from ittakes2.account.api import UserResource, ProfileResource
+from api import UserResource, ProfileResource
+import views
 
 v1_api = Api(api_name='v1')
 v1_api.register(UserResource(),canonical=True)
@@ -24,8 +25,5 @@ v1_api.register(ProfileResource(),canonical=True)
 
 
 urlpatterns = [
-    url(r'^api/', include(v1_api.urls)),
-    url(r'^admin/', include(admin.site.urls)),
-    url('^', include('django.contrib.auth.urls')),
-    url(r'^account/', include('ittakes2.account.urls')),
+    url('^', views.AccountView.as_view()),
 ]
