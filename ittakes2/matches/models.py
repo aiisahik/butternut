@@ -43,47 +43,59 @@ class Match(models.Model):
 	def __unicode__(self):
 		return "{0} beats {1}".format(self.winner.last_name, self.loser.last_name)
 
+	def calc_result(self, existing_rankings=None, save_rating=False): 
+		# match_winner = match.winner
+		# match_loser = match.loser
+
+		if existing_rankings and self.winner in existing_rankings:
+			winner_rating = existing_rankings[self.winner]
+		elif self.winner.mu and self.winner.sigma: 
+			winner_rating = Rating(mu=self.winner.mu, sigma=self.winner.sigma)
+		else:
+			winner_rating = Rating()
+			print "initializing", self.winner 
+
+		if existing_rankings and self.loser in existing_rankings:
+			loser_rating = existing_rankings[self.loser]
+		elif self.loser.mu and self.loser.sigma: 
+			loser_rating = Rating(mu=self.loser.mu, sigma=self.loser.sigma)
+		else: 
+			loser_rating = Rating()
+			print "initializing", self.loser
+		
+		if save_rating:
+			self.winner_mu = winner_rating.mu
+			self.winner_sigma = winner_rating.sigma
+			self.loser_mu = loser_rating.mu
+			self.loser_sigma = loser_rating.sigma
+			self.save()
+		
+		new_winner_rating, new_loser_rating = rate_1vs1(winner_rating, loser_rating)
+		print "{0} - {1} beats {2}".format(self.create_date, self.winner, self.loser)
+		print self.winner.last_name, "has new rating: ", winner_rating.mu, "-->", new_winner_rating.mu
+		print self.loser.last_name, "has new rating: ", loser_rating.mu, "-->", new_loser_rating.mu
+		print "============================"
+		existing_rankings[self.winner] = new_winner_rating
+		existing_rankings[self.loser] = new_loser_rating
+
+		return existing_rankings
 # Create your models here.
 
 
-class Rankings(object):
-	player_rankings = None
 
-	def calc_all(self,from_date=None, to_date=None, save_rating=True):
-		self.player_rankings = {}
-		matches = Match.objects.order_by('create_date').all()
-		for match in matches: 
-			self.calc_match_result(match,save_rating)
-
-	def calc_match_result(self,match, save_rating=True): 
-		# match_winner = match.winner
-		# match_loser = match.loser
-		if match.winner not in self.player_rankings:
-			winner_rating = Rating()
-			print "initializing", match.winner 
-		else: 
-			winner_rating = self.player_rankings[match.winner]
-
-		if match.loser not in self.player_rankings:
-			loser_rating = Rating()
-			print "initializing", match.loser
-		else: 
-			loser_rating = self.player_rankings[match.loser]
-		
+def calc_all_rankings(save_rating=True):
+	player_rankings = {}
+	matches = Match.objects.order_by('create_date').all()
+	for match in matches: 
+		player_rankings = match.calc_result(existing_rankings=player_rankings,save_rating=True)
+	print "New Rankings:"
+	for player, rating in player_rankings.iteritems():
+		print player, rating.mu, rating.sigma
 		if save_rating:
-			match.winner_mu = winner_rating.mu
-			match.winner_sigma = winner_rating.sigma
-			match.loser_mu = loser_rating.mu
-			match.loser_sigma = loser_rating.sigma
-			match.save()
-		
-		new_winner_rating, new_loser_rating = rate_1vs1(winner_rating, loser_rating)
-		print "{0} - {1} beats {2}".format(match.create_date, match.winner, match.loser)
-		print match.winner.last_name, "has new rating: ", winner_rating.mu, "-->", new_winner_rating.mu
-		print match.loser.last_name, "has new rating: ", loser_rating.mu, "-->", new_loser_rating.mu
-		self.player_rankings[match.winner] = new_winner_rating
-		self.player_rankings[match.loser] = new_loser_rating
+			player.mu = rating.mu
+			player.sigma = rating.sigma
+			player.save()
 
-		return True
+	
 
 
