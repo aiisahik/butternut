@@ -31,7 +31,7 @@ K_FACTOR = 10
 #: Default rating class.
 RATING_CLASS = float
 #: Default initial rating.
-INITIAL = 1200
+INITIAL = 1500
 #: Default Beta value.
 BETA = 200
 

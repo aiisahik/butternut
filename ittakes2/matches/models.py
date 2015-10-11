@@ -136,7 +136,8 @@ class Match(models.Model):
 # Create your models here.
 
 def calc_all_rankings(save_rating=True):
-	player_rankings = {}
+	player_rankings = dict([ (profile, {'trueskill': Rating(), 'elo': elo.INITIAL}) for profile in Profile.objects.all()])
+	print 'player_rankings', player_rankings
 	matches = Match.objects.order_by('create_date').all()
 	for match in matches: 
 		player_rankings = match.calc_result(existing_rankings=player_rankings,save_rating=True)

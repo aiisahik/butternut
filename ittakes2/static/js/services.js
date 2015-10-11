@@ -4,7 +4,9 @@ angular.module('ittakes2.services', [])
 		service.profiles_defer = $q.defer();
 
 		service.get_profiles = function(force_refresh){
-				
+				if (force_refresh){
+					service.profiles_defer = $q.defer();
+				}
 				if (!service.profiles || force_refresh){
 
 	        		Profiles.query().$promise.then(function(result){
