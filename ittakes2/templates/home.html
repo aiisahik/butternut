@@ -1,0 +1,176 @@
+{% extends 'base/_base.html' %}
+{% load staticfiles %}
+
+
+
+{% block body %}
+{% verbatim %}
+<div ng-app="ittakes2.public">
+	<div ng-controller="homeController as pageView">
+		<uib-tabset justified="true">
+		    <uib-tab>
+		    	<uib-tab-heading>
+		        	<i class="fa fa-list fa-lg"></i>
+		      	</uib-tab-heading>
+		    	<div class="container">
+			    	<h1 class="text-center"> Rankings </h1>
+					<div ng-controller="rankingsController as rankingsView">
+						<div ng-if="rankingsView.profiles && !rankingsView.loading">
+							<div class="row">
+								<div class="col-xs-1">Rank</div>
+								<div class="col-xs-7">Player</div>
+								<div class="col-xs-2">ELO</div>
+								<div class="col-xs-2">TrueSkill</div>
+							</div>
+							<div class="row" ng-repeat="profile in rankingsView.profiles">
+								<div class="col-xs-1">{{ $index + 1 }}</div>
+								<div class="col-xs-7">{{ profile.first_name }} {{ profile.last_name }}</div>
+								<div class="col-xs-2">{{ profile.elo | number:0 }}</div>
+								<div class="col-xs-2">{{ profile.mu | number:1 }}</div>
+							</div>
+							<br><br>
+							<button class="btn btn-default btn-lg btn-block" ng-click="rankingsView.calc()">
+								Recalculate Rankings
+							</button>
+						</div>	
+						<div class="text-center" ng-show="rankingsView.loading">
+							<br><br>
+							<i class="fa fa-refresh fa-spin fa-2x"></i>
+							<br><br>
+						</div>
+					</div>
+				</div>
+			</uib-tab>
+		    <uib-tab>
+		      	<uib-tab-heading>
+		        	<i class="fa fa-futbol-o fa-lg"></i>
+		      	</uib-tab-heading>
+		      	<div class="container">
+			    	<h1 class="text-center"> Matches </h1>
+					<div ng-controller="matchesController as matchesView">
+						<div ng-if="matchesView.matches && !matchesView.loading">
+							<div class="row">
+								<div class="col-xs-3">Time</div>
+								<div class="col-xs-4 text-center">Winner</div>
+								<div class="col-xs-1 text-center"></div>
+								<div class="col-xs-4 text-center">Loser</div>
+							</div>
+							<hr />
+							<div ng-repeat="match in matchesView.matches">
+								<div class="row">
+									<div class="col-xs-3"><br>{{match.create_date | date:'MMM d, y h:mm a'}} </div>
+									<div class="col-xs-4 text-center"><h5>{{match.winner.first_name | limitTo:1}}. {{match.winner.last_name}} <h5></div>
+									<div class="col-xs-1 text-center"> <br>def. </div>
+									<div class="col-xs-4 text-center"><h5>{{match.loser.first_name | limitTo:1}}. {{match.loser.last_name}} </h5> </div>
+								</div>
+								<div class="row">
+									<div class="col-xs-3"> </div>
+									<div class="col-xs-4 text-center">{{match.winner_score }}</div>
+									<div class="col-xs-1 text-center"> </div>
+									<div class="col-xs-4 text-center">{{match.loser_score }}</div>
+								</div>
+								<hr />
+							</div>
+							<br><br>
+						</div>	
+						<div class="text-center" ng-show="matchesView.loading">
+							<br><br>
+							<i class="fa fa-refresh fa-spin fa-2x"></i>
+							<br><br>
+						</div>
+					</div>
+				</div>
+		    </uib-tab>
+		    <uib-tab>
+		      	<uib-tab-heading>
+		        	<i class="fa fa-gamepad fa-lg"></i>
+		      	</uib-tab-heading>
+		      	<div class="container">
+					<div ng-controller="newMatchController as newMatchView">
+						<div class="text-center" ng-show="newMatchView.loading">
+							<br><br>
+							<i class="fa fa-refresh fa-spin fa-2x"></i>
+							<br><br>
+						</div>
+						<div ng-if="newMatchView.new_match">
+							<h1 class="text-center">New Match Successfully Created!</h1>
+							<br>
+							<div class="row">
+								<div class="col-xs-5 text-center">
+									<h3>{{newMatchView.new_match.winner_first_name | limitTo:1}}. {{newMatchView.new_match.winner_last_name}} <h3>
+								</div>
+								<div class="col-xs-2 text-center"> <br><br>def. </div>
+								<div class="col-xs-5 text-center"><h3>{{newMatchView.new_match.loser_first_name | limitTo:1}}. {{newMatchView.new_match.loser_last_name}} </h3> </div>
+							</div>
+							<div class="row">
+								<div class="col-xs-5 text-center"><h3>{{newMatchView.new_match.winner_score }}</h3></div>
+								<div class="col-xs-2 text-center"> </div>
+								<div class="col-xs-5 text-center"><h3>{{newMatchView.new_match.loser_score }}</h3></div>
+							</div>
+							<br>
+							<hr/>
+							<div class="row">
+								<div class="col-xs-5 text-center">
+									<h4>{{newMatchView.new_match.new_winner_elo | number:0 }} <i class="fa fa-chevron-up text-success"></i> </h4>
+									(from {{newMatchView.new_match.winner_elo | number:0 }})
+								</div>
+								<div class="col-xs-2 text-center"> <br><h5 class="text-muted">ELO</h5> </div>
+								<div class="col-xs-5 text-center">
+									<h4>{{newMatchView.new_match.new_loser_elo | number:0 }} <i class="fa fa-chevron-down text-danger"></i> </h4>
+									(from {{newMatchView.new_match.loser_elo | number:0 }})
+								</div>
+							</div>
+							<hr/>
+							<div class="row">
+								<div class="col-xs-5 text-center">
+									<h4>{{newMatchView.new_match.new_winner_mu | number:2 }} <i class="fa fa-chevron-up text-success"></i> </h4>
+									(from {{newMatchView.new_match.winner_mu | number:2 }})
+								</div>
+								<div class="col-xs-2 text-center"> <br><h5 class="text-muted">TrueSkill</h5> </div>
+								<div class="col-xs-5 text-center">
+									<h4>{{newMatchView.new_match.new_loser_mu | number:2 }} <i class="fa fa-chevron-down text-danger"></i> </h4>
+									(from {{newMatchView.new_match.loser_mu | number:2 }})
+								</div>
+							</div>
+							<hr />
+							<button class="btn btn-primary btn-lg btn-block" ng-click="newMatchView.reset(); newMatchForm.reset()">Reset </button>
+						</div>
+						<form name="newMatchForm" ng-submit="newMatchView.submit(newMatchForm)" ng-hide="newMatchView.new_match || newMatchView.loading">
+							<h1 class="text-center"> New Match </h1>
+							<br>
+							<div class="row">
+	                           	<div class="col-xs-6">
+	                           		<div class="form-group clearfix" ng-class="{ 'has-error': newMatchForm.winner.$invalid }">
+		                                <select ng-options="player as player.first_name for player in newMatchView.winner_profiles" ng-model="newMatchView.form_data.winner" name="winner" class="form-control input-lg" required placeholder="Select Winner" ng-change="newMatchView.update_profiles()">
+		                                    <option value="">-- select winner --</option>
+		                                </select>
+		                            </div>
+	                           		
+									<div class="form-group clearfix">
+		                                <input name="winner_score" class="form-control input-lg" type="text" ng-model="newMatchView.form_data.winner_score" placeholder="Winner Score"/>  
+		                            </div>
+		                        </div>
+
+		                        <div class="col-xs-6">
+	                           		<div class="form-group clearfix" ng-class="{ 'has-error': newMatchForm.loser.$invalid }">
+		                                <select ng-options="player as player.first_name for player in newMatchView.loser_profiles" ng-model="newMatchView.form_data.loser" name="loser" class="form-control input-lg" required placeholder="Select loser" ng-change="newMatchView.update_profiles()">
+		                                    <option value="">-- select loser --</option>
+		                                </select>
+		                            </div>
+	                           		
+									<div class="form-group clearfix">
+		                                <input name="loser_score" class="form-control input-lg" type="text" ng-model="newMatchView.form_data.loser_score" placeholder="loser Score"/>  
+		                            </div>
+		                        </div>
+	                    	</div>
+	                    	<button class="btn btn-primary btn-lg btn-block">Add Match </button>
+						</form>
+					</div>
+
+				</div>
+		    </uib-tab>
+		</uib-tabset>
+	</div>
+</div>
+{% endverbatim %}
+{% endblock %}

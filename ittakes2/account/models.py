@@ -8,6 +8,7 @@ class Profile(models.Model):
 	last_name = models.CharField(max_length=200)
 	mu = models.FloatField(null=True, blank=True)
 	sigma = models.FloatField(null=True, blank=True)
+	elo = models.FloatField(null=True, blank=True)
 	dob = models.DateTimeField(null=True, blank=True)
 
 	def __unicode__(self):

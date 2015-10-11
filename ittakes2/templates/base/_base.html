@@ -9,25 +9,25 @@
         <meta name="robots" content="noindex, nofollow">
         {% endblock %}
         {% block title %}   
-            <title>{% if title %}{{ title }}{% else %}Kinnek - Admin View{% endif %}</title>
+            <title>{% if title %}{{ title }}{% else %}Ping Pong Matches{% endif %}</title>
         {% endblock %}
+        
         {% block favicon %}
-        <link rel="shortcut icon" href="{% static 'logos/kinnek_favicon.ico' %}" />
         {% endblock %}
 
-        {% include '_css_head.html' %}
-        {% include '_js_head.html' %}
+        {% include '_css_header.html' %}
     </head>
-    <body ng-app="kinnek.admin" class="{{body_class}}">
-            <!--[if lt IE 9]>
-                <div style='text-align:center; background:#dc3939; color:white; font-weight:bold; padding: 10px 0; border-bottom: 3px #FFF solid;'>
+    <body class="{{body_class}}">
+        <!--[if lt IE 9]>
+            <div style='text-align:center; background:#dc3939; color:white; font-weight:bold; padding: 10px 0; border-bottom: 3px #FFF solid;'>
                 You are using an older browser. Some features may not work.<br/> We recommend updating to a newer browser.
-                </div>
-            <![endif]-->
-            {% block header %}{% endblock header %}
-            {% block body %}{% endblock body %}
+            </div>
+        <![endif]-->
+        {% block header %}{% endblock header %}
+        
+        {% block body %}{% endblock body %}
 
-            {% include '_js_footer.html' %}
-            {% block extrajs %}{% endblock extrajs %}
-        </body>
+        {% include '_js_footer.html' %}
+        {% block extrajs %}{% endblock extrajs %}
+    </body>
 </html>
