@@ -6,6 +6,9 @@
   "dependencies": {
     "gulp": "^3.9.0"
   },
+  "engines": {
+    "node": "5.0.0"
+  },
   "devDependencies": {
     "bower": "^1.3.12",
     "main-bower-files": "^2.5.0",
