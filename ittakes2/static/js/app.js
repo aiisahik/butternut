@@ -1,8 +1,7 @@
 'use strict';
 
-angular.module('ittakes2.public', ['ngResource', 
-	'ngSanitize',
-	'ngTouch',
+angular.module('ittakes2.public', [
+    'ngResource', 
 	'ui.bootstrap', 
 	'ittakes2.services', 
 	'ittakes2.controllers', 

@@ -1,0 +1,1 @@
+angular.module('ittakes2.public.templates', []);

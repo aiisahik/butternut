@@ -2,3 +2,5 @@
 
 *.DS_Store
 staticfiles
+node_modules
+npm-debug.log

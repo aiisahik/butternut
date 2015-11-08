@@ -18,7 +18,7 @@ class ProfileResource(ModelResource):
 	# fields = ['id', 'elo', 'mu', 'sigma', 'first_name', 'last_name']
 
 	class Meta:
-		queryset = Profile.objects.order_by('-elo').all()
+		queryset = Profile.objects.order_by('-mu').all()
 		resource_name = 'profile'
 		authorization= Authorization()
 

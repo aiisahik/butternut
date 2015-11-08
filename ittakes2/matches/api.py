@@ -12,7 +12,7 @@ class MatchResource(ModelResource):
     loser = fields.ForeignKey(AccountAPI.ProfileResource, 'loser', full=False)
     # winner_id = fields.IntegerProperty()
     class Meta:
-        queryset = Match.objects.all()
+        queryset = Match.objects.order_by('-create_date').all()
         resource_name = 'match'
         list_allowed_methods = ['get', 'post', 'put', 'delete']
         always_return_data = True
