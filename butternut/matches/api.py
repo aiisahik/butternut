@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from tastypie import fields
 from tastypie.authorization import Authorization
 from tastypie.resources import ModelResource
-import ittakes2.account.api as AccountAPI
+import butternut.account.api as AccountAPI
 from models import Match
 import datetime
 

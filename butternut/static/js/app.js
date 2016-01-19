@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('ittakes2.public', [
+angular.module('butternut.public', [
     'ngResource', 
 	'ui.bootstrap', 
-	'ittakes2.services', 
-	'ittakes2.controllers', 
+	'butternut.services', 
+	'butternut.controllers', 
 	'ui.router',
   	])
 

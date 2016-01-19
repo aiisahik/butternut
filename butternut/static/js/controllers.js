@@ -1,4 +1,4 @@
-angular.module('ittakes2.controllers', [])
+angular.module('butternut.controllers', [])
 
     .controller('homeController', ['$scope', 'DataService', function ($scope, DataService) {
         var vm = this; 

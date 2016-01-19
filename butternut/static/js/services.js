@@ -1,4 +1,4 @@
-angular.module('ittakes2.services', [])
+angular.module('butternut.services', [])
 	.factory('DataService', ['$q', 'Profiles', 'Profile', 'Matches', function ($q, Profiles, Profile, Matches) {
 		var service = {};
 		service.profiles_defer = $q.defer();

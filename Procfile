@@ -1,1 +1,1 @@
-web: gunicorn ittakes2.wsgi --log-file -
+web: gunicorn butternut.wsgi --log-file -

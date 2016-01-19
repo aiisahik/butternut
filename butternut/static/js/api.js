@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ittakes2.services')
+angular.module('butternut.services')
     .factory('Profiles', ['$resource', function ($resource) {
         return $resource('/api/v1/profile/', {},
             {

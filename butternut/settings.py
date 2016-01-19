@@ -32,12 +32,12 @@ if LOCAL_ENV:
     }
     DATABASES = {
         'default': {
-            'PASSWORD': 'c0euVzU6CWiiJPlz8DLHV9Yxdv',
+            'PASSWORD': 'GJMlVJkkwtwxXddG-XJ3-vUXQB',
             'PORT': 5432,
-            'HOST': 'ec2-54-204-0-120.compute-1.amazonaws.com',
-            'USER': 'hdldkfrpjsrhjz',
+            'HOST': 'ec2-54-83-61-45.compute-1.amazonaws.com',
+            'USER': 'jcbgpcuizmfqiq',
             'ENGINE': 'django.db.backends.postgresql_psycopg2', 
-            'NAME': 'd8t41ts7gv55rs'
+            'NAME': 'd248c0o9psfo08'
         }
     }
 else: 
@@ -67,8 +67,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ittakes2.account',
-    'ittakes2.matches',
+    'butternut.account',
+    'butternut.matches',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -84,14 +84,14 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
-ROOT_URLCONF = 'ittakes2.urls'
+ROOT_URLCONF = 'butternut.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'ittakes2/templates'),
-            os.path.join(BASE_DIR, 'ittakes2/templates/base'),
+            os.path.join(BASE_DIR, 'butternut/templates'),
+            os.path.join(BASE_DIR, 'butternut/templates/base'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -100,7 +100,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'ittakes2.context_processors.basic_info',
+                'butternut.context_processors.basic_info',
             ],
         },
     },
@@ -110,7 +110,7 @@ TEMPLATES = [
 #     'django.template.loaders.app_directories.Loader',
 # )
 
-WSGI_APPLICATION = 'ittakes2.wsgi.application'
+WSGI_APPLICATION = 'butternut.wsgi.application'
 
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
@@ -139,6 +139,6 @@ USE_TZ = True
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'ittakes2/static'),
+    os.path.join(BASE_DIR, 'butternut/static'),
 )
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'

@@ -1,4 +1,4 @@
-"""ittakes2 URL Configuration
+"""butternut URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.8/topics/http/urls/
@@ -15,15 +15,30 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.views.generic import TemplateView
+
+from butternut.matches.views import MatchCalculatorView
+
 from tastypie.api import Api
-from api import UserResource, ProfileResource
-import views
+from butternut.account.api import UserResource, ProfileResource
+from butternut.matches.api import MatchResource
+
+
+
+# from butternut.matches.views import GameView
 
 v1_api = Api(api_name='v1')
 v1_api.register(UserResource(),canonical=True)
 v1_api.register(ProfileResource(),canonical=True)
+v1_api.register(MatchResource(),canonical=True)
 
 
 urlpatterns = [
-    url('^', views.AccountView.as_view()),
+    url(r'^api/', include(v1_api.urls)),
+    url(r'^admin/', include(admin.site.urls)),
+    url('^', include('django.contrib.auth.urls')),
+    url(r'^account/', include('butternut.account.urls')),
+    # url(r'/', GameView.as_view()) ),
+    url(r'^$', TemplateView.as_view(template_name="home.html") ),
+    url(r'^calc/', MatchCalculatorView.as_view() ),
 ]

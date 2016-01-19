@@ -20,7 +20,7 @@ var gulp = require('gulp'),
 
 // assets.init(gutil.env.type || 'local');
 
-var staticRoot = 'ittakes2/static/';
+var staticRoot = 'butternut/static/';
 
 // ===  task definitions === //
 
@@ -55,7 +55,7 @@ gulp.task('concat-js-public', function () {
 gulp.task('html2js-public', function () {
     return gulp.src(assets.templatesPublic)
         .pipe(ngHtml2Js({
-            moduleName: "ittakes2.public.templates",
+            moduleName: "butternut.public.templates",
             rename: function (url) {
                 return assets.destinations.getTemplatesPublicUrl(url);
             }

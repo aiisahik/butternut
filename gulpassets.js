@@ -1,7 +1,7 @@
 var _ = require('lodash');
-var staticRoot = 'ittakes2/static/',
+var staticRoot = 'butternut/static/',
     staticPath = '/static/',
-    templateRoot = 'ittakes2/templates/',
+    templateRoot = 'butternut/templates/',
     css = staticRoot + 'css/dist',
     images = staticRoot + 'images/src/**/**/*',
     js = staticRoot + 'js/dist';
